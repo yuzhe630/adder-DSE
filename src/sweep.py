@@ -100,21 +100,18 @@ def sweep(args):
         
         # overall data matrix
         matAll = np.genfromtxt(args.data_file, delimiter=',', dtype='float')
-        np.random.seed(num)
-        np.random.shuffle(matAll)
-        
-        matAll = matAll[:int(matAll.shape[0]*selectRatio),:]
         robust_scaler = RobustScaler()
         
         #saveTrainSequence(matAll)
         # for ml computation, stripped the tag and use pure float data
-        exfile = '../data/maxFeatures_4k.csv'
-        if not exfile:
-            print("exhaustive data file load failure.")
-            sys.exit(1)
+        #exfile = '../data/maxFeatures_4k.csv'
+        #if not exfile:
+        #    print("exhaustive data file load failure.")
+        #    sys.exit(1)
         
-        exMatAll = np.genfromtxt(exfile, delimiter=',', dtype='float')
-        exFeatureAll = robust_scaler.fit_transform(exMatAll[:,1:])
+        #exMatAll = np.genfromtxt(exfile, delimiter=',', dtype='float')
+        #exFeatureAll = robust_scaler.fit_transform(exMatAll[:,1:])
+        exFeatureAll = robust_scaler.fit_transform(matAll[:,1:-4])
         exFeature = exFeatureAll[:, :2]
         exFeature = np.insert(exFeature, exFeature.shape[1], exFeatureAll[:, -1].transpose(), axis = 1)
         
@@ -126,6 +123,10 @@ def sweep(args):
             print("exhaustiveOrig data file load failure.")
             sys.exit(1)
         
+        np.random.seed(num)
+        np.random.shuffle(matAll)
+        
+        matAll = matAll[:int(matAll.shape[0]*selectRatio),:]
         exMatTagAll = np.genfromtxt(exfileTag, delimiter=',', dtype='object')
         
         mat = robust_scaler.fit_transform(matAll[:,1:])
