@@ -2,7 +2,7 @@
 
 ## Data
 
-The dataset is *data/adder_value.csv*. Each row contains a sequence representing prefix adder which is followed by four values indicating area, power, delay and TNS.
+The dataset is *data/adder_value.csv*. Each row contains a sequence representing prefix adder and four values indicating area, power, delay and TNS.
 
 *data/feature_value.csv* combines the features for each instance.
 
