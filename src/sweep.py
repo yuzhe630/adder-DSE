@@ -99,7 +99,9 @@ def sweep(args):
         finalAdderNum = 10
         
         # overall data matrix
-        matAll = np.genfromtxt(args.data_file, delimiter=',', dtype='float')
+        exMatTagAll = np.genfromtxt(args.data_file, delimiter=',', dtype='object')
+        #matAll = np.genfromtxt(args.data_file, delimiter=',', dtype='float')
+        matAll = exMatTagAll[:,1:] #remove index
         robust_scaler = RobustScaler()
         
         #saveTrainSequence(matAll)
@@ -118,18 +120,17 @@ def sweep(args):
         exFeature_delay = exFeatureAll[:, :2]
         exFeature_delay = np.insert(exFeature_delay, exFeature_delay.shape[1], exFeatureAll[:, 35:].transpose(), axis = 1)
         # orig exhaustive file, with tag, used for final prefix sequence dumping
-        exfileTag = '../data/tag_4k.csv'
-        if not exfileTag:
-            print("exhaustiveOrig data file load failure.")
-            sys.exit(1)
-        
+        #exfileTag = '../data/tag_4k.csv'
+        #if not exfileTag:
+        #    print("exhaustiveOrig data file load failure.")
+        #    sys.exit(1)
+
         np.random.seed(num)
         np.random.shuffle(matAll)
         
         matAll = matAll[:int(matAll.shape[0]*selectRatio),:]
-        exMatTagAll = np.genfromtxt(exfileTag, delimiter=',', dtype='object')
         
-        mat = robust_scaler.fit_transform(matAll[:,1:])
+        mat = robust_scaler.fit_transform(matAll[:,2:])
         
         # remove outlier data
         #featureTrain = mat[:int(mat.shape[0]*trainRatio), :featureNum - 1] # not include slack value
@@ -252,7 +253,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dim', type = int, default = 2, help = 'dimension of search space')
     parser.add_argument('--repeat', type = int, default = 1, help = 'number of repeated experiments')
-    parser.add_argument('--data_file', type = str, default = '../data/mergedMaxFeatures.csv', help = 'exhaustive solutions')
+    parser.add_argument('--data_file', type = str, default = '../data/feature_values.csv', help = 'exhaustive solutions')
     
     args = parser.parse_args()
     
