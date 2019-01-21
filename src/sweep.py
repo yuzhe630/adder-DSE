@@ -17,20 +17,7 @@ import argparse
 
 
 path = '../files'
-#def saveTrainSequence(matAll):
-#    filePath = os.path.join(path,'trainSequence.csv')
-#    trainFile = open(filePath,'w')
-#    trainSequenceWriter = csv.writer(trainFile)
-#    trainSequence = []
-#
-#    for i in range(0,int(matAll.shape[0])):
-#        trainSequence.append(matAll[i][1:])
-#    trainSequenceWriter.writerows(trainSequence)
-#    trainFile.close()
 
-##############################
-# write results to output file
-##############################
 def writeResults(row):
     outFile_writer.writerows(row)
 
@@ -64,7 +51,6 @@ def findPrefixSeq(exMatTagAll, outputList, option, num):
 
 def sweep(args):
     for num in range(args.repeat):
-        # % of the data will be used as training
         selectRatio = 0.3
         
         trainRatio = 0.7
@@ -77,14 +63,10 @@ def sweep(args):
         # need to print out the predicted prefix adder sequence
         needSeq = True
         
-        # usage ./svm.py merged.csv
         if not args.data_file:
             print("data file load failure.")
             sys.exit(1)
         
-        ##############################
-        # dump out the regression result
-        ##############################
         #outPath = os.path.join(path, 'results.txt')
         #outputFile = open(outPath, 'w')
         
@@ -104,12 +86,6 @@ def sweep(args):
         matAll = exMatTagAll[:,1:] #remove index
         robust_scaler = RobustScaler()
         
-        #saveTrainSequence(matAll)
-        # for ml computation, stripped the tag and use pure float data
-        #exfile = '../data/maxFeatures_4k.csv'
-        #if not exfile:
-        #    print("exhaustive data file load failure.")
-        #    sys.exit(1)
         
         #exMatAll = np.genfromtxt(exfile, delimiter=',', dtype='float')
         #exFeatureAll = robust_scaler.fit_transform(exMatAll[:,1:])
@@ -141,7 +117,6 @@ def sweep(args):
         
         featureTrain_delay = mat[:int(mat.shape[0]*trainRatio),  : 2] 
         featureTrain_delay = np.insert(featureTrain_delay,featureTrain_delay.shape[1], mat[:int(mat.shape[0]*trainRatio), 35:67].transpose(), axis = 1)  # insert slack value to the last column
-        #featureTrain_delay = np.insert(featureTrain_delay,featureTrain_delay.shape[1], mat[:int(mat.shape[0]*trainRatio), 34:67].transpose(), axis = 1)  # insert slack value to the last column
         
         #featureTest = mat[int(mat.shape[0]*trainRatio):, :featureNum - 1]
         featureTest = mat[int(mat.shape[0]*trainRatio):, : 2]
@@ -155,9 +130,7 @@ def sweep(args):
         #iteration = [1000, 0, 1, 10, 0.1, 100, 0.01, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 20, 30, 40, 50, 60]
         iteration = [1000, 0, 1, 10, 0.1, 100, 0.01, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 20, 30, 40, 50]
 
-        ################################################
         # different regression models
-        ################################################
         regr_1 = svm.SVR(kernel='rbf', C=1.3, gamma=0.5)
         #regr_1 = svm.SVR(kernel='rbf', C=1.3, gamma=0.5, epsilon=0.01)
         regr_2 = svm.SVR(kernel='poly', C=1e3, gamma=0.1)
