@@ -6,8 +6,8 @@ The dataset is *data/adder_value.csv*. Each row contains a sequence representing
 
 *data/feature_value.csv* combines the features for each instance.
 Each row corresponds to an adder instance with the format as below:
-
-<INDEX>,<Sequence>,<SIZE>,<MFO>,<MPFO(32)>,<SPFO(32)>,<TARGET_DELAY>,<AREA>,<POWER>,<DELAY>,<TNS>
+  
+\<INDEX\>,\<Sequence\>,\<SIZE\>,\<MFO\>,\<MPFO(32)\>,\<SPFO(32)\>,\<TARGET_DELAY\>,\<AREA\>,\<POWER\>,\<DELAY\>,\<TNS\>
 
 ## TODO
 
